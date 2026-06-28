@@ -1,26 +1,121 @@
+/* src/app/globals.css */
 @import "tailwindcss";
 
+/* ─── CSS Custom Properties ─────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand-primary:  #FFD700;
+  --brand-light:    #FFE44D;
+  --brand-dark:     #B89600;
+  --light-bg:       #F4F3EF;
+  --light-border:   #E2E0D8;
+  /*--dark-bg:        #0E0E0E; */
+  --nav-height:     4rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: lazy;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0E0E0E;
+  color: #FAFAFA;
+  min-height: 100dvh;
+}
+
+::selection {
+  background-color: rgba(255, 215, 0, 0.2);
+  color: #FAFAFA;
+}
+
+:focus-visible {
+  outline: 2px solid #FFD700;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: #0E0E0E; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+}
+
+/* ─── Typography ─────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-syne), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #FAFAFA;
+}
+
+p {
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.75;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ─── Utility ────────────────────────────────────────────────── */
+.section-padding {
+  padding-top: clamp(5rem, 10vw, 9rem);
+  padding-bottom: clamp(5rem, 10vw, 9rem);
+}
+
+.section-padding-sm {
+  padding-top: clamp(3rem, 6vw, 5rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #FFD700, #FFE44D 40%, #B89600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-surface {
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.eyebrow {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 215, 0, 0.8);
+}
+
+.no-tap {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ─── Keyframes ──────────────────────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
