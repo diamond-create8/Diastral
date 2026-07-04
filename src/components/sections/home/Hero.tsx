@@ -149,15 +149,21 @@ export function Hero() {
           ─────────────────────────────────────────────────────────────
         */}
         <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/images/work/hero.jpg"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: 0.67 }}
-        >
-          <source src="/images/hero.mp4" type="video/mp4" />
+            autoPlay
+            muted
+            loop
+            playsInline
+            disablePictureInPicture
+            preload="auto"
+            poster="/images/hero-poster.jpg"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: 0.4 }}
+            onLoadedData={(e) => {
+              e.currentTarget.play().catch(() => {})
+            }}
+          >
+            <source src="/images/video/hero-compressed.mp4" type="video/mp4" />
+            <source src="/images/video/hero.mp4" type="video/mp4" />
         </video>
 
         {/* Dark overlay — keeps text readable over the video */}
@@ -327,3 +333,4 @@ export function Hero() {
     </section>
   )
 }
+
