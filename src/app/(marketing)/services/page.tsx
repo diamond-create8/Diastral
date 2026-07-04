@@ -1,18 +1,38 @@
 // src/app/(marketing)/services/page.tsx
-import type { Metadata } from 'next'
-import { Container }    from '@/components/layout/Container'
-import { FadeIn }       from '@/components/motion/FadeIn'
+import type { Metadata }  from 'next'
+import Link               from 'next/link'
+import { Container }      from '@/components/layout/Container'
+import { FadeIn }         from '@/components/motion/FadeIn'
 import { StaggerChildren, StaggerItem } from '@/components/motion/StaggerChildren'
-import { SERVICES }     from '@/data/services'
-import Link             from 'next/link'
+import { SERVICES }       from '@/data/services'
+import { SERVICE_FAQS, GENERAL_FAQS } from '@/data/faqs'
+import { buildMetadata }  from '@/lib/seo'
+import {
+  serviceSchema,
+  faqSchema,
+  breadcrumbSchema,
+  jsonLdScriptProps,
+} from '@/lib/schema'
+import { SITE_CONFIG }    from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Services',
-  description:
-    'Website development, growth marketing, CRM systems, email marketing, SMS automation, and customer engagement solutions designed to help your business grow.',
+  ...buildMetadata({
+    title:       'Our Services & How We Can Help',
+    description: 'Diastral offers website development, SEO, Google and Meta Ads, email marketing, SMS automation, and CRM integration, three disciplines working as one system to grow your business.',
+    path:        '/services',
+    ogImage:     '/images/og/og-services.jpg',
+    keywords: [
+      'website development services South Africa',
+      'SEO services South Africa',
+      'Google Ads management',
+      'Meta Ads management',
+      'email marketing automation',
+      'CRM integration South Africa',
+      'digital marketing services',
+    ],
+  }),
 }
 
-// ─── Icon Map (same as home, inline for now) ──────────────────────────────────
 const ICON_MAP: Record<string, React.ReactNode> = {
   'development-and-design': (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -24,60 +44,68 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   'growth-acquisition': (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <circle cx="11" cy="11" r="6" stroke="currentColor" strokeWidth="1.6"/>
-      <path d="M16.5 16.5L20 20"        stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M8 13l2-2 2 1.5L15 9.5"  stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M16.5 16.5L20 20"       stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+      <path d="M8 13l2-2 2 1.5L15 9.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
   'automation-and-integration': (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.6"/>
-      <circle cx="4"  cy="6"  r="1.5" stroke="currentColor" strokeWidth="1.4"/>
-      <circle cx="20" cy="6"  r="1.5" stroke="currentColor" strokeWidth="1.4"/>
-      <circle cx="4"  cy="18" r="1.5" stroke="currentColor" strokeWidth="1.4"/>
-      <circle cx="20" cy="18" r="1.5" stroke="currentColor" strokeWidth="1.4"/>
-      <path d="M5.5 7L10 10.5M18.5 7L14 10.5M5.5 17L10 13.5M18.5 17L14 13.5" stroke="currentColor" strokeWidth="1.2"/>
-    </svg>
-  ),
-  /*
-  'automation': (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M5 12.5C5 8.91 7.91 6 11.5 6c2.8 0 5.2 1.68 6.34 4.09" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+      <path d="M5 12.5C5 8.91 7.91 6 11.5 6c2.8 0 5.2 1.68 6.34 4.09"  stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
       <path d="M19 11.5C19 15.09 16.09 18 12.5 18c-2.8 0-5.2-1.68-6.34-4.09" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-      <path d="M16.5 8.5l2 3 2.5-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M16.5 8.5l2 3 2.5-2"  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M7.5 15.5l-2-3-2.5 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
-  'ai-integrations': (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="3.5" stroke="currentColor" strokeWidth="1.6"/>
-      <circle cx="12" cy="3"  r="1.5" fill="currentColor"/>
-      <circle cx="12" cy="21" r="1.5" fill="currentColor"/>
-      <circle cx="3"  cy="12" r="1.5" fill="currentColor"/>
-      <circle cx="21" cy="12" r="1.5" fill="currentColor"/>
-      <path d="M12 4.5V8.5M12 15.5V19.5M4.5 12H8.5M15.5 12H19.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-    </svg>
-  ),
-  /*'bpo': (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="10" y="2.5" width="4"  height="3.5" rx="0.5" stroke="currentColor" strokeWidth="1.4"/>
-      <rect x="3.5" y="10" width="4"  height="3.5" rx="0.5" stroke="currentColor" strokeWidth="1.4"/>
-      <rect x="16.5" y="10" width="4" height="3.5" rx="0.5" stroke="currentColor" strokeWidth="1.4"/>
-      <path d="M12 6v3M12 9H5v1.5M12 9h7v1.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M5.5 13.5V17h13v-3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 17v3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-    </svg>
-  ),*/
+}
+
+// AEO-structured service outcome descriptions
+// These are read by AI answer engines as authoritative service definitions
+const SERVICE_OUTCOMES: Record<string, { who: string; outcome: string }> = {
+  'development-and-design': {
+    who:     'Small and medium businesses that need a professional, high-performance website that converts visitors into enquiries.',
+    outcome: 'A fast, mobile-first website that serves as your best salesperson, working 24/7 to attract and convert the right customers.',
+  },
+  'growth-acquisition': {
+    who:     'Businesses that have a website but are not generating consistent, predictable leads from organic search or paid advertising.',
+    outcome: 'A compounding customer acquisition system, SEO that grows over time and paid campaigns that generate qualified leads consistently.',
+  },
+  'automation-and-integration': {
+    who:     'Businesses losing leads because follow-up is manual, through WhatsApp, inconsistent, or non-existent.',
+    outcome: 'An automated communication system that follows up with every lead, nurtures existing customers, and keeps your business top of mind with little to no manual effort.',
+  },
 }
 
 export default function ServicesPage() {
+  // All service schemas for machine-readable service catalog
+  const allServiceSchemas = SERVICES.map((s) =>
+    serviceSchema({
+      name:        s.title,
+      description: s.description,
+      path:        s.href,
+    })
+  )
+
+  // Collect all service FAQs for FAQPage schema
+  const allFaqs = [
+    ...GENERAL_FAQS,
+    ...Object.values(SERVICE_FAQS).flat(),
+  ]
+
   return (
     <>
+      {/* Structured data */}
+      <script {...jsonLdScriptProps(breadcrumbSchema([
+        { name: 'Home',     path: '/'         },
+        { name: 'Services', path: '/services' },
+      ]))} />
+      <script {...jsonLdScriptProps(allServiceSchemas)} />
+      <script {...jsonLdScriptProps(faqSchema(allFaqs))} />
+
       {/* ── Page Header ── */}
-      <div
+      <header
         className="relative pt-36 pb-24 overflow-hidden"
         style={{ backgroundColor: '#0E0E0E' }}
       >
-        {/* Background grid */}
         <div
           className="absolute inset-0 pointer-events-none"
           aria-hidden="true"
@@ -95,7 +123,7 @@ export default function ServicesPage() {
         />
 
         <Container>
-          <div className="max-w-[48rem]">
+          <div className="max-w-[52rem]">
             <FadeIn>
               <p className="eyebrow mb-5">Services</p>
             </FadeIn>
@@ -109,50 +137,50 @@ export default function ServicesPage() {
                 }}
               >
                 Everything your
-                business needs online.
                 <br />
                 <span style={{ color: 'rgba(250,250,250,0.35)' }}>
-                  All in one
-                  cohesive system.
+                  business needs online.
                 </span>
               </h1>
             </FadeIn>
             <FadeIn delay={0.2}>
               <p
-                className="font-sans max-w-[36rem]"
+                className="font-sans max-w-[40rem]"
                 style={{
                   fontSize:   '1.0625rem',
-                  lineHeight: '1.78',
-                  color:      'rgba(255,255,255,0.42)',
+                  lineHeight: '1.8',
+                  color:      'rgba(255,255,255,0.45)',
                 }}
               >
-                Three core disciplines, one cohesive system. From attracting new
-                customers to growing your reach and nurturing existing relationships,
-                every service is designed to work together.
+                Three core disciplines. Attracting new customers, growing your reach, and nurturing existing customers, designed to work as one cohesive system.
               </p>
             </FadeIn>
           </div>
         </Container>
-      </div>
+      </header>
 
       {/* ── Service Sections ── */}
       {SERVICES.map((service, i) => {
         const isEven = i % 2 === 0
+        const outcome = SERVICE_OUTCOMES[service.id]
+        const faqs    = SERVICE_FAQS[service.id] ?? []
+
         return (
           <section
             key={service.id}
             id={service.id}
-            className="section-padding-sm"
+            aria-labelledby={`service-heading-${service.id}`}
             style={{
               backgroundColor: isEven ? '#0E0E0E' : '#0A0A0A',
-              borderTop: '1px solid rgba(255,255,255,0.05)',
+              borderTop:       '1px solid rgba(255,255,255,0.05)',
               scrollMarginTop: '4rem',
             }}
           >
             <Container>
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20 items-start">
-
-                {/* Left: label + title */}
+              <div
+                className="py-20 grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20 items-start"
+              >
+                {/* Left: identity + CTA */}
                 <FadeIn>
                   <div className="flex flex-col gap-6 lg:sticky lg:top-28">
                     <div className="flex items-center gap-4">
@@ -175,6 +203,7 @@ export default function ServicesPage() {
                     </div>
 
                     <h2
+                      id={`service-heading-${service.id}`}
                       className="font-display font-bold text-white"
                       style={{
                         fontSize:      'clamp(1.75rem, 3vw, 2.5rem)',
@@ -197,9 +226,10 @@ export default function ServicesPage() {
                   </div>
                 </FadeIn>
 
-                {/* Right: description + features */}
+                {/* Right: description + AEO content + features + FAQ */}
                 <FadeIn delay={0.15}>
-                  <div className="flex flex-col gap-8">
+                  <div className="flex flex-col gap-10">
+                    {/* Service description */}
                     <p
                       className="font-sans"
                       style={{
@@ -210,6 +240,52 @@ export default function ServicesPage() {
                     >
                       {service.description}
                     </p>
+
+                    {/* AEO: Who it's for + expected outcome */}
+                    {outcome && (
+                      <div className="flex flex-col gap-4">
+                        <div
+                          className="flex flex-col gap-3 p-5 rounded-xl"
+                          style={{
+                            backgroundColor: 'rgba(255,255,255,0.02)',
+                            border:          '1px solid rgba(255,255,255,0.06)',
+                          }}
+                        >
+                          <p
+                            className="font-sans text-xs font-semibold uppercase tracking-[0.1em]"
+                            style={{ color: 'rgba(255,215,0,0.55)' }}
+                          >
+                            Who this is for
+                          </p>
+                          <p
+                            className="font-sans text-sm leading-relaxed"
+                            style={{ color: 'rgba(255,255,255,0.45)' }}
+                          >
+                            {outcome.who}
+                          </p>
+                        </div>
+                        <div
+                          className="flex flex-col gap-3 p-5 rounded-xl"
+                          style={{
+                            backgroundColor: 'rgba(255,215,0,0.03)',
+                            border:          '1px solid rgba(255,215,0,0.08)',
+                          }}
+                        >
+                          <p
+                            className="font-sans text-xs font-semibold uppercase tracking-[0.1em]"
+                            style={{ color: 'rgba(255,215,0,0.55)' }}
+                          >
+                            Expected outcome
+                          </p>
+                          <p
+                            className="font-sans text-sm leading-relaxed"
+                            style={{ color: 'rgba(255,255,255,0.45)' }}
+                          >
+                            {outcome.outcome}
+                          </p>
+                        </div>
+                      </div>
+                    )}
 
                     {/* What's included */}
                     <div>
@@ -233,14 +309,7 @@ export default function ServicesPage() {
                               width="14" height="14" viewBox="0 0 14 14"
                               fill="none" aria-hidden="true" className="shrink-0"
                             >
-                              <path
-                                d="M2.5 7L5.5 10L11.5 4"
-                                stroke="#FFD700"
-                                strokeWidth="1.4"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                opacity="0.7"
-                              />
+                              <path d="M2.5 7L5.5 10L11.5 4" stroke="#FFD700" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" opacity="0.7"/>
                             </svg>
                             <span
                               className="font-sans text-sm"
@@ -252,6 +321,37 @@ export default function ServicesPage() {
                         ))}
                       </div>
                     </div>
+
+                    {/* AEO: FAQ per service — renders for screen readers + AI engines */}
+                    {faqs.length > 0 && (
+                      <div className="flex flex-col gap-4">
+                        <p
+                          className="font-sans text-xs font-semibold uppercase tracking-[0.12em]"
+                          style={{ color: 'rgba(255,255,255,0.22)' }}
+                        >
+                          Common questions
+                        </p>
+                        {faqs.map((faq, fi) => (
+                          <div
+                            key={fi}
+                            className="py-4"
+                            style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+                          >
+                            <p
+                              className="font-sans text-sm font-semibold text-white mb-1.5"
+                            >
+                              {faq.question}
+                            </p>
+                            <p
+                              className="font-sans text-sm leading-relaxed"
+                              style={{ color: 'rgba(255,255,255,0.38)' }}
+                            >
+                              {faq.answer}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </FadeIn>
               </div>
@@ -260,18 +360,73 @@ export default function ServicesPage() {
         )
       })}
 
+      {/* ── General FAQ Section (AEO) ── */}
+      <section
+        aria-labelledby="faq-heading"
+        className="section-padding"
+        style={{
+          backgroundColor: '#0A0A0A',
+          borderTop:       '1px solid rgba(255,255,255,0.05)',
+        }}
+      >
+        <Container size="md">
+          <FadeIn>
+            <p className="eyebrow mb-5">FAQ</p>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <h2
+              id="faq-heading"
+              className="font-display font-bold text-white mb-12"
+              style={{
+                fontSize:      'clamp(2rem, 4vw, 3rem)',
+                letterSpacing: '-0.035em',
+                lineHeight:    1.08,
+              }}
+            >
+              Frequently asked
+              <br />questions.
+            </h2>
+          </FadeIn>
+          <div className="flex flex-col">
+            {GENERAL_FAQS.map((faq, i) => (
+              <FadeIn key={i} delay={0.05 * i}>
+                <div
+                  className="py-6 grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-4 md:gap-12"
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+                >
+                  <p
+                    className="font-display font-semibold text-white"
+                    style={{ fontSize: '1rem', letterSpacing: '-0.01em' }}
+                  >
+                    {faq.question}
+                  </p>
+                  <p
+                    className="font-sans text-sm leading-relaxed"
+                    style={{ color: 'rgba(255,255,255,0.42)' }}
+                  >
+                    {faq.answer}
+                  </p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </Container>
+      </section>
+
       {/* ── CTA ── */}
       <section
+        aria-labelledby="services-cta-heading"
         className="section-padding text-center"
         style={{
           backgroundColor: '#0E0E0E',
-          borderTop: '1px solid rgba(255,255,255,0.05)',
+          borderTop:       '1px solid rgba(255,255,255,0.05)',
         }}
       >
         <Container size="sm">
           <FadeIn>
             <p className="eyebrow mb-6">Ready to Start?</p>
             <h2
+              id="services-cta-heading"
               className="font-display font-bold text-white mb-6"
               style={{
                 fontSize:      'clamp(2rem, 4vw, 3.25rem)',
@@ -292,8 +447,8 @@ export default function ServicesPage() {
               }}
             >
               Most of our best engagements start with a simple conversation. Tell us
-              where you are and where you want to go & we'll tell you what we'd
-              build.
+              where you are and where you want to go and we'll tell you what
+              we'd build.
             </p>
             <Link
               href="/contact"

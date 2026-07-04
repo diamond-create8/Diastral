@@ -1,19 +1,35 @@
 // src/app/(marketing)/about/page.tsx
 import type { Metadata } from 'next'
 import Link              from 'next/link'
+import Image             from 'next/image'
 import { Container }     from '@/components/layout/Container'
 import { FadeIn }        from '@/components/motion/FadeIn'
 import { StaggerChildren, StaggerItem } from '@/components/motion/StaggerChildren'
 import { TESTIMONIALS }  from '@/data/testimonials'
 import { SITE_CONFIG }   from '@/lib/constants'
-import Image  from 'next/image'
+import { buildMetadata } from '@/lib/seo'
+import { faqSchema, jsonLdScriptProps } from '@/lib/schema'
+import { GENERAL_FAQS }  from '@/data/faqs'
 
 export const metadata: Metadata = {
-  title:       'About',
-  description: 'Diastral is a leading web development agency. We build & connect the systems that helps businesses attract customers, grow and dominate the online space.',
+  ...buildMetadata({
+    title:       'Read About Diastral',
+    description: 'Diastral is a digital agency founded by Kwadwo Boateng Opoku-Agyemang. We build websites, SEO systems, and automation for ambitious small and medium businesses across South Africa.',
+    path:        '/about',
+    ogImage:     '/images/og/og-about.jpg',
+    keywords: [
+      'Diastral Web Solutions',
+      'digital agency South Africa',
+      'web development South Africa',
+      'web development company',
+      'Kwadwo Boateng Opoku-Agyemang',
+      'Kwadwo Boateng',
+      'Mr. Boateng',
+      'Kwadwo Opoku-Agyemang',
+      'digital systems partner',
+    ],
+  }),
 }
-
-// ─── Page-level constants ──────────────────────────────────────────────────────
 
 const FOUNDED_YEAR = 2025
 
@@ -30,7 +46,7 @@ const APPROACH = [
     number:   '02',
     label:    'Grow',
     heading:  'Turn attention into revenue.',
-    body:     'Once people find you, we build the systems that convert them. Paid advertising, content that builds genuine authority, and acquisition funnels that keep working whether you\'re watching them or not.',
+    body:     "Once people find you, we build the systems that convert them. Paid advertising, content that builds genuine authority, and acquisition funnels that keep working whether you're watching them or not.",
     services: ['Paid Advertising (Google & Meta Ads)', 'Search Engine Optimisation', 'Social Media Distribution', 'Campaign Strategy & Execution'],
     accent:   'rgba(255,215,0,0.05)',
   },
@@ -38,7 +54,7 @@ const APPROACH = [
     number:   '03',
     label:    'Retain',
     heading:  'Keep customers coming back.',
-    body:     'We understand that the most profitable customer is the one you already have. We build CRM systems, automated follow-up sequences, and communication infrastructure that keeps your customers engaged and spending.',
+    body:     'The most profitable customer is the one you already have. We build CRM systems, automated follow-up sequences, and communication infrastructure that keeps your customers engaged and spending.',
     services: ['Email Marketing', 'SMS Campaigns', 'Customer Retention', 'CRM Integrations'],
     accent:   'rgba(52,211,153,0.05)',
   },
@@ -52,8 +68,8 @@ const REASONS = [
       </svg>
     ),
     title:   'Built for growth',
-    body:    'We build systems that are designed to improve your business\' metrics, leads, revenue, efficiency, or retention.',
-    benefit: 'You know exactly what outcome we\'re working toward before we start.',
+    body:    "We build systems designed to improve business metrics — leads, revenue, efficiency, or retention. We don't build things for the sake of building them.",
+    benefit: "You know exactly what outcome we're working toward before we start.",
   },
   {
     icon: (
@@ -63,8 +79,8 @@ const REASONS = [
       </svg>
     ),
     title:   'Direct access',
-    body:    'You get to ask about specifics you do not understand and how we will be helping you from the moment you start your journey with us from the people doing the work.',
-    benefit: 'Faster decisions, fewer miscommunications & better work.',
+    body:    'You work directly with the person doing the work — no account managers, no handoffs. The person who scoped your project is the person building it.',
+    benefit: 'Faster decisions, fewer miscommunications, and better work.',
   },
   {
     icon: (
@@ -74,7 +90,7 @@ const REASONS = [
       </svg>
     ),
     title:   'Fast execution',
-    body:    'Most of our projects launch within four to six weeks. We do our best to move with urgency because we understand that delayed execution has a real cost, in revenue, in momentum, and in competitive ground lost.',
+    body:    'Most projects launch within four to six weeks. Delayed execution has a real cost — in revenue, in momentum, and in competitive ground lost.',
     benefit: 'You spend less time waiting and more time growing.',
   },
   {
@@ -85,12 +101,10 @@ const REASONS = [
       </svg>
     ),
     title:   'Long-term thinking',
-    body:    'We build with your next chapter in mind. The foundation we design today is meant to compound, not require a full rebuild every two years.',
+    body:    'We build with your next chapter in mind. The infrastructure we design today is meant to compound — not require a full rebuild every two years.',
     benefit: 'Your investment grows in value over time rather than dating quickly.',
   },
 ]
-
-// ─── Shared background decoration ──────────────────────────────────────────────
 
 function PageHeaderBg() {
   return (
@@ -114,26 +128,20 @@ function PageHeaderBg() {
   )
 }
 
-// ─── 1. HERO ───────────────────────────────────────────────────────────────────
-
 function HeroSection() {
   return (
-    <section
+    <header
       className="relative pt-36 pb-28 overflow-hidden"
       style={{ backgroundColor: '#0E0E0E' }}
-      aria-labelledby="about-hero-heading"
     >
       <PageHeaderBg />
-
       <Container>
         <div className="max-w-[54rem]">
           <FadeIn>
-            <p className="eyebrow mb-6">Learn more about Diastral</p>
+            <p className="eyebrow mb-6">About Diastral</p>
           </FadeIn>
-
           <FadeIn delay={0.1}>
             <h1
-              id="about-hero-heading"
               className="font-display font-bold text-white mb-8"
               style={{
                 fontSize:      'clamp(2.75rem, 6vw, 5rem)',
@@ -141,16 +149,13 @@ function HeroSection() {
                 lineHeight:    1.04,
               }}
             >
-              We build the systems
-              <br />
-              for businesses that
+              Your ideal
               <br />
               <span style={{ color: 'rgba(250,250,250,0.32)' }}>
-                want to grow online.
+                systems partner.
               </span>
             </h1>
           </FadeIn>
-
           <FadeIn delay={0.2}>
             <p
               className="font-sans max-w-[42rem]"
@@ -160,50 +165,39 @@ function HeroSection() {
                 color:      'rgba(255,255,255,0.45)',
               }}
             >
-              
-              Diastral Web Solutions is a leading web development agency that 
-              specialises in creating digital engines in websites, software and digital marketing strategies 
-              that help businesses grow online. 
-              From ranking #1 on Google to full-scale web development, 
-              we deliver innovative digital solutions that drive businesses results. 
-              You should partner with us to elevate your online presence and achieve digital success.
+              Diastral builds the websites, SEO systems, paid campaigns, and automation
+              that help small and medium businesses attract customers, grow revenue,
+              and retain them. All designed to work as one system, not a collection
+              of separate projects.
             </p>
           </FadeIn>
         </div>
       </Container>
-    </section>
+    </header>
   )
 }
-
-// ─── 2. OUR STORY ─────────────────────────────────────────────────────────────
 
 function StorySection() {
   return (
     <section
+      aria-labelledby="story-heading"
       className="section-padding"
       style={{
         backgroundColor: '#0A0A0A',
         borderTop:       '1px solid rgba(255,255,255,0.055)',
       }}
-      aria-labelledby="story-heading"
     >
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-10 lg:gap-20">
-
-          {/* Left: sticky label */}
           <FadeIn>
             <div className="lg:sticky lg:top-28 lg:self-start flex flex-col gap-2">
               <p className="eyebrow">Our Story</p>
-              <p
-                className="font-sans text-xs"
-                style={{ color: 'rgba(255,255,255,0.22)' }}
-              >
+              <p className="font-sans text-xs" style={{ color: 'rgba(255,255,255,0.22)' }}>
                 EST. {FOUNDED_YEAR}
               </p>
             </div>
           </FadeIn>
 
-          {/* Right: narrative */}
           <div className="flex flex-col gap-10">
             <FadeIn delay={0.1}>
               <h2
@@ -222,25 +216,40 @@ function StorySection() {
 
             <div className="flex flex-col gap-6">
               {[
-                `Most of the businesses we talked to early on shared the same frustration. They'd invested in a website, sometimes a "good looking" one and after a year or two, nothing had meaningfully changed. They hand't received enquiries, these are instances they noticed but nobody could tell them why.`,
-                `The problem wasn't the website, it was that the website existed in isolation, it was completely disconnected from their marketing. It was disconnected from how they followed up with leads. It was disconnected from the tools they used to actually run their business. So in short, it was merely just a brochure in a world that had moved far beyond that.`,
-                `We kept seeing the same pattern: a web designer or a freelancer who would build something for a quick buck and disappeared. We would notice an SEO agency running campaigns that had no connection to the site's content. Most times, they would connect them to a CRM system that nobody had been trained to use properly.`,
-                `The businesses failing online weren't failing because they lacked ambition or budget, we believe that they were failing because they had been handed tools be it AI, what to do, what to post, where to put what, all this without an exact strategy, and deliverables without accountability for outcomes.`,
-                `Diastral was built to bridge that gap, we're a team that understands how the online world works and what businesses need to do to thrive in it.`,
+                {
+                  text:     "Most of the businesses we talked to early on shared the same frustration. They'd invested thousands in a website, often a good-looking one and after a year or two, nothing had meaningfully changed. Enquiries hadn't increased. Nobody could tell them why.",
+                  emphasis: false,
+                },
+                {
+                  text:     "The problem wasn't the website. It was that the website existed in isolation, it was completely disconnected from their marketing, their brand, disconnected from how they followed up with leads, disconnected from the tools they used to actually run their business. A digital brochure in a world that had moved far beyond brochures.",
+                  emphasis: false,
+                },
+                {
+                  text:     "We kept seeing the same pattern: a freelancer who built something and disappeared. An SEO agency running campaigns with no connection to the site's content. A CRM nobody had been trained to use. Five tools in five separate tabs, owned by five different contractors and nobody looking at the whole picture.",
+                  emphasis: false,
+                },
+                {
+                  text:     "The businesses failing online weren't failing because they lacked ambition or budget. They were failing because they'd been handed tools without a strategy, and deliverables without accountability for outcomes.",
+                  emphasis: true,
+                },
+                {
+                  text:     "Diastral was built to bridge that gap. We're a agency that designs the whole operation: the website, the acquisition system, the automation so that everything compounds rather than fragments.",
+                  emphasis: false,
+                },
               ].map((para, i) => (
                 <FadeIn key={i} delay={0.12 + i * 0.06}>
                   <p
                     className="font-sans"
                     style={{
-                      fontSize:   i === 0 ? '1.125rem' : '1.0625rem',
+                      fontSize:   '1.0625rem',
                       lineHeight: '1.85',
-                      color:      i === 0
-                        ? 'rgba(255,255,255,0.6)'
+                      color:      para.emphasis
+                        ? 'rgba(255,255,255,0.65)'
                         : 'rgba(255,255,255,0.42)',
-                      fontStyle: i === 3 ? 'italic' : 'normal',
+                      fontStyle:  para.emphasis ? 'italic' : 'normal',
                     }}
                   >
-                    {para}
+                    {para.text}
                   </p>
                 </FadeIn>
               ))}
@@ -252,18 +261,14 @@ function StorySection() {
   )
 }
 
-// ─── 3. OUR APPROACH ──────────────────────────────────────────────────────────
-
 function ApproachSection() {
   return (
     <section
+      aria-labelledby="approach-heading"
       className="section-padding"
       style={{ backgroundColor: '#0E0E0E' }}
-      aria-labelledby="approach-heading"
     >
       <Container>
-
-        {/* Header */}
         <div className="mb-16 max-w-[36rem]">
           <FadeIn>
             <p className="eyebrow mb-5">Our Approach</p>
@@ -278,26 +283,21 @@ function ApproachSection() {
                 lineHeight:    1.08,
               }}
             >
-              Three core disciplines, 
-              <br />all in one cohesive system.
+              Three disciplines.
+              <br />One cohesive system.
             </h2>
           </FadeIn>
           <FadeIn delay={0.15}>
             <p
               className="font-sans mt-5"
-              style={{
-                fontSize:   '1.0625rem',
-                lineHeight: '1.78',
-                color:      'rgba(255,255,255,0.4)',
-              }}
+              style={{ fontSize: '1.0625rem', lineHeight: '1.78', color: 'rgba(255,255,255,0.4)' }}
             >
               Every service we offer exists within one of these three outcomes.
-              The true power is in how they connect.
+              The power is in how they connect.
             </p>
           </FadeIn>
         </div>
 
-        {/* Cards */}
         <StaggerChildren className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {APPROACH.map((card) => (
             <StaggerItem key={card.number}>
@@ -308,7 +308,6 @@ function ApproachSection() {
                   border:          '1px solid rgba(255,255,255,0.07)',
                 }}
               >
-                {/* Subtle accent glow */}
                 <div
                   className="absolute inset-0 pointer-events-none rounded-2xl"
                   aria-hidden="true"
@@ -316,8 +315,6 @@ function ApproachSection() {
                     background: `radial-gradient(ellipse 80% 50% at 50% 0%, ${card.accent} 0%, transparent 70%)`,
                   }}
                 />
-
-                {/* Top row */}
                 <div className="relative flex items-start justify-between">
                   <span
                     className="inline-flex items-center gap-2.5 font-sans text-xs font-semibold uppercase tracking-[0.12em] px-3 py-1.5 rounded-full"
@@ -329,15 +326,10 @@ function ApproachSection() {
                   >
                     {card.label}
                   </span>
-                  <span
-                    className="font-mono text-xs"
-                    style={{ color: 'rgba(255,255,255,0.15)' }}
-                  >
+                  <span className="font-mono text-xs" style={{ color: 'rgba(255,255,255,0.15)' }}>
                     {card.number}
                   </span>
                 </div>
-
-                {/* Heading */}
                 <div className="relative flex flex-col gap-3">
                   <h3
                     className="font-display font-bold text-white"
@@ -349,15 +341,10 @@ function ApproachSection() {
                   >
                     {card.heading}
                   </h3>
-                  <p
-                    className="font-sans text-sm leading-relaxed"
-                    style={{ color: 'rgba(255,255,255,0.42)' }}
-                  >
+                  <p className="font-sans text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.42)' }}>
                     {card.body}
                   </p>
                 </div>
-
-                {/* Services list */}
                 <div
                   className="relative flex flex-col gap-2 mt-auto pt-6"
                   style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
@@ -369,19 +356,13 @@ function ApproachSection() {
                     What you get
                   </p>
                   {card.services.map((svc) => (
-                    <div
-                      key={svc}
-                      className="flex items-center gap-2.5"
-                    >
+                    <div key={svc} className="flex items-center gap-2.5">
                       <span
                         className="w-1 h-1 rounded-full shrink-0"
                         style={{ backgroundColor: '#FFD700', opacity: 0.5 }}
                         aria-hidden="true"
                       />
-                      <span
-                        className="font-sans text-sm"
-                        style={{ color: 'rgba(255,255,255,0.38)' }}
-                      >
+                      <span className="font-sans text-sm" style={{ color: 'rgba(255,255,255,0.38)' }}>
                         {svc}
                       </span>
                     </div>
@@ -391,23 +372,20 @@ function ApproachSection() {
             </StaggerItem>
           ))}
         </StaggerChildren>
-
       </Container>
     </section>
   )
 }
 
-// ─── 4. MEET THE FOUNDER ──────────────────────────────────────────────────────
-
 function FounderSection() {
   return (
     <section
+      aria-labelledby="founder-heading"
       className="section-padding"
       style={{
         backgroundColor: '#0A0A0A',
         borderTop:       '1px solid rgba(255,255,255,0.055)',
       }}
-      aria-labelledby="founder-heading"
     >
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-12 lg:gap-20 items-start">
@@ -415,62 +393,20 @@ function FounderSection() {
           {/* Left: founder image */}
           <FadeIn>
             <div className="lg:sticky lg:top-28">
-              
-              {/*  ── FOUNDER PHOTO SLOT ────────────────────────────────────
-                To add your photo:
-
-                1. Place your image at: public/images/about/founder.jpg
-                   Recommended size: 800×1000px (portrait), well-lit,
-                   professional but not stiff. Natural environment works well.
-
-                2. Replace this entire <div> block with:
-
-                   import Image from 'next/image'*/}
-
-                   <div className="relative w-full overflow-hidden rounded-2xl"
-                        style={{ aspectRatio: '3/4' }}>
-                     <Image
-                       src="/images/about/founder.heic"
-                       alt="Kwadwo Boateng — Founder, Diastral Web Solutions"
-                       fill
-                       className="object-cover"
-                       sizes="(max-width: 768px) 100vw, 480px"
-                       priority
-                     />
-                   </div>
-                
-              {/*
               <div
-                className="w-full rounded-2xl flex flex-col items-center justify-center gap-3"
-                style={{
-                  aspectRatio:     '4/5',
-                  backgroundColor: '#141414',
-                  border:          '1px solid rgba(255,255,255,0.06)',
-                  background:      'radial-gradient(ellipse 70% 60% at 50% 30%, rgba(255,215,0,0.04) 0%, #141414 70%)',
-                }}
+                className="relative w-full overflow-hidden rounded-2xl"
+                style={{ aspectRatio: '3/4' }}
               >
-                <div
-                  className="w-16 h-16 rounded-full flex items-center justify-center"
-                  style={{
-                    backgroundColor: 'rgba(255,215,0,0.08)',
-                    border:          '1px solid rgba(255,215,0,0.12)',
-                  }}
-                  aria-hidden="true"
-                >
-                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                    <circle cx="14" cy="11" r="5" stroke="rgba(255,215,0,0.5)" strokeWidth="1.5"/>
-                    <path d="M5 23.5C5 19.5 9 16.5 14 16.5s9 3 9 7" stroke="rgba(255,215,0,0.5)" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <p
-                  className="font-mono text-[10px] uppercase tracking-[0.12em]"
-                  style={{ color: 'rgba(255,255,255,0.12)' }}
-                >
-                  Add your photo here
-                </p>
+                <Image
+                  src="/images/about/founder.jpg"
+                  alt="Kwadwo Boateng Opoku-Agyemang - Founder of Diastral Web Solutions"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 320px"
+                  priority
+                />
               </div>
 
-              {/* Signature block beneath photo */}
               <div
                 className="mt-5 pt-5 flex flex-col gap-1"
                 style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
@@ -481,10 +417,7 @@ function FounderSection() {
                 >
                   Kwadwo Boateng Opoku-Agyemang
                 </p>
-                <p
-                  className="font-sans text-sm"
-                  style={{ color: 'rgba(255,255,255,0.3)' }}
-                >
+                <p className="font-sans text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>
                   Founder, Diastral Web Solutions
                 </p>
               </div>
@@ -493,10 +426,9 @@ function FounderSection() {
 
           {/* Right: content */}
           <div className="flex flex-col gap-8">
-
             <FadeIn delay={0.1}>
               <div className="flex flex-col gap-2">
-                <p className="eyebrow">Meet our Founder</p>
+                <p className="eyebrow">Meet the Founder</p>
                 <h2
                   id="founder-heading"
                   className="font-display font-bold text-white"
@@ -506,35 +438,34 @@ function FounderSection() {
                     lineHeight:    1.1,
                   }}
                 >
-                  Hi, 
-                  I'm Kwadwo Boateng.
+                  Hi, I'm Kwadwo Boateng.
                 </h2>
               </div>
             </FadeIn>
 
             <div className="flex flex-col gap-5">
               {[
-               {
-                  text: `Diastral started in late 2022 with a question, not a business plan. I was learning Python, getting serious about technology and where it's heading, and I kept noticing the same thing, strong businesses, real businesses, operating like the digital shift wasn't happening to them. I wanted to be the person who changed that.`,
-                  emphasis: true,
-              },
                 {
-                  text: `Working on mock projects and then real ones, I kept hitting the same wall. Clients would light up at the ideas, the systems, the way everything could connect and compound then stall. "Maybe next quarter." "We're not sure it's worth it yet."`,
+                  text:     "Diastral began as an idea in 2022 from a simple observation: most businesses weren’t held back by ambition or effort. They were held back by systems that weren’t built for how modern growth actually works.",
+                  emphasis: true,
+                },
+                {
+                  text:     `While studying Computer Science, I spent my time building and breaking digital systems, working on real and mock projects, and observing how businesses respond when presented with better ways of operating. The pattern was consistent: strong ideas losing momentum at the point of execution, not because they lacked value, but because the underlying systems weren’t designed to support scale.`,
                   emphasis: false,
                 },
                 {
-                   text: `That thinking is the problem. Launch day isn't the finish line, it's really just the starting gun. What you're really building is infrastructure that gets more valuable the longer it runs. A system that sits still is just an expensive business card.`,
-                    emphasis: true,
+                  text:     "That gap became the focus.",
+                  emphasis: true,
                 },
                 {
-                  text: `Diastral exists because smaller businesses deserve the same level of strategic digital thinking that enterprise companies pay agencies millions for, not a templated Wix build dressed up with a premium invoice, but real systems, designed around how your business actually works.`,
+                  text:     "Diastral exists today to close that by building digital systems that don’t just represent a business online, but actively improve how it runs, sells, and grows over time. The goal isn’t surface-level design or temporary fixes. It’s infrastructure that compounds value the longer it operates.",
                   emphasis: false,
                 },
                 {
-                  text: `I'm still studying. Still learning. And I bring every bit of that into each client I work with. I won't pretend to have all the answers, but I'll always be straight about what I know, honest about what I don't, and completely committed to your growth.`,
-                  emphasis: true,
-                },]
-                .map((para, i) => (
+                  text:     "I’m still studying, still building, and that keeps my work grounded in reality rather than theory. I’m direct about what works, honest about what doesn’t, and focused on building systems that actually move businesses in Africa forward.",
+                  emphasis: false,
+                },
+              ].map((para, i) => (
                 <FadeIn key={i} delay={0.15 + i * 0.05}>
                   <p
                     className="font-sans"
@@ -582,23 +513,17 @@ function FounderSection() {
                   >
                     Currently studying
                   </p>
-                  <p
-                    className="font-sans text-sm"
-                    style={{ color: 'rgba(255,255,255,0.55)' }}
-                  >
-                    BSc Computer Science & Business Management
+                  <p className="font-sans text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                    BSc Computer Science &amp; Business Management
                   </p>
-                  <p
-                    className="font-sans text-sm"
-                    style={{ color: 'rgba(255,255,255,0.3)' }}
-                  >
+                  <p className="font-sans text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>
                     University of the Free State
                   </p>
                 </div>
               </div>
             </FadeIn>
 
-            {/* Connect links */}
+            {/* Connect */}
             <FadeIn delay={0.5}>
               <div className="flex flex-col gap-3">
                 <p
@@ -609,22 +534,23 @@ function FounderSection() {
                 </p>
                 <div className="flex flex-wrap items-center gap-3">
                   <a
-                    href="https://linkedin.com/in/kwadwo-boateng-opoku-agyemang" 
+                    href="https://linkedin.com/in/kwadwo-boateng-opoku-agyemang"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Kwadwo Boateng on LinkedIn (opens in new tab)"
                     className="inline-flex items-center gap-2 font-sans font-medium text-sm text-white/45 hover:text-white/80 transition-colors duration-200 px-4 h-9 rounded-md"
                     style={{ border: '1px solid rgba(255,255,255,0.09)' }}
                   >
                     <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
                       <rect x="1.5" y="1.5" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.3"/>
                       <path d="M5 6.5V10.5M5 4.5V4.6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-                      <path d="M8 10.5V8.5C8 7.4 8.9 6.5 10 6.5s2 .9 2 2v2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-                      <path d="M8 6.5V10.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+                      <path d="M8 10.5V8.5C8 7.4 8.9 6.5 10 6.5s2 .9 2 2v2M8 6.5V10.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
                     </svg>
                     LinkedIn
                   </a>
                   <a
                     href="mailto:kwadwo.boateng@diastralws.co.za"
+                    aria-label="Email Kwadwo Boateng"
                     className="inline-flex items-center gap-2 font-sans font-medium text-sm text-white/45 hover:text-white/80 transition-colors duration-200 px-4 h-9 rounded-md"
                     style={{ border: '1px solid rgba(255,255,255,0.09)' }}
                   >
@@ -637,7 +563,6 @@ function FounderSection() {
                 </div>
               </div>
             </FadeIn>
-
           </div>
         </div>
       </Container>
@@ -645,17 +570,14 @@ function FounderSection() {
   )
 }
 
-// ─── 5. WHY BUSINESSES CHOOSE US ──────────────────────────────────────────────
-
 function ReasonsSection() {
   return (
     <section
+      aria-labelledby="reasons-heading"
       className="section-padding"
       style={{ backgroundColor: '#0E0E0E' }}
-      aria-labelledby="reasons-heading"
     >
       <Container>
-
         <div className="mb-16">
           <FadeIn>
             <p className="eyebrow mb-5">Why Work With Us</p>
@@ -670,8 +592,8 @@ function ReasonsSection() {
                 lineHeight:    1.08,
               }}
             >
-              Why do businesses
-              choose Diastral?
+              Why businesses
+              choose Diastral.
             </h2>
           </FadeIn>
         </div>
@@ -686,7 +608,6 @@ function ReasonsSection() {
                   border:          '1px solid rgba(255,255,255,0.07)',
                 }}
               >
-                {/* Icon */}
                 <div
                   className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
                   style={{
@@ -697,8 +618,6 @@ function ReasonsSection() {
                 >
                   {reason.icon}
                 </div>
-
-                {/* Text */}
                 <div className="flex flex-col gap-3 flex-1">
                   <h3
                     className="font-display font-bold text-white"
@@ -706,23 +625,12 @@ function ReasonsSection() {
                   >
                     {reason.title}
                   </h3>
-                  <p
-                    className="font-sans text-sm leading-relaxed"
-                    style={{ color: 'rgba(255,255,255,0.42)' }}
-                  >
+                  <p className="font-sans text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.42)' }}>
                     {reason.body}
                   </p>
                 </div>
-
-                {/* Benefit */}
-                <div
-                  className="pt-5"
-                  style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
-                >
-                  <p
-                    className="font-sans text-xs"
-                    style={{ color: 'rgba(255,215,0,0.55)' }}
-                  >
+                <div className="pt-5" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                  <p className="font-sans text-xs" style={{ color: 'rgba(255,215,0,0.55)' }}>
                     {reason.benefit}
                   </p>
                 </div>
@@ -730,26 +638,22 @@ function ReasonsSection() {
             </StaggerItem>
           ))}
         </StaggerChildren>
-
       </Container>
     </section>
   )
 }
 
-// ─── 6. TESTIMONIALS ──────────────────────────────────────────────────────────
-
 function TestimonialsSection() {
   return (
     <section
+      aria-labelledby="testimonials-heading"
       className="section-padding"
       style={{
         backgroundColor: '#0A0A0A',
         borderTop:       '1px solid rgba(255,255,255,0.055)',
       }}
-      aria-labelledby="testimonials-heading"
     >
       <Container>
-
         <div className="mb-14">
           <FadeIn>
             <p className="eyebrow mb-5">Client Feedback</p>
@@ -772,28 +676,22 @@ function TestimonialsSection() {
         <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {TESTIMONIALS.map((t) => (
             <StaggerItem key={t.id}>
-              <div
+              <figure
                 className="flex flex-col justify-between gap-8 p-8 rounded-2xl h-full"
                 style={{
                   backgroundColor: '#141414',
                   border:          '1px solid rgba(255,255,255,0.07)',
                 }}
               >
-                {/* Quote mark */}
                 <div className="flex flex-col gap-5">
                   <span
                     className="font-display select-none"
-                    style={{
-                      fontSize:   '3rem',
-                      lineHeight: 0.8,
-                      color:      'rgba(255,215,0,0.2)',
-                    }}
+                    style={{ fontSize: '3rem', lineHeight: 0.8, color: 'rgba(255,215,0,0.2)' }}
                     aria-hidden="true"
                   >
-                    "
+                    &ldquo;
                   </span>
-
-                  <p
+                  <blockquote
                     className="font-display"
                     style={{
                       fontSize:      '1.0625rem',
@@ -803,53 +701,33 @@ function TestimonialsSection() {
                     }}
                   >
                     {t.quote}
-                  </p>
+                  </blockquote>
                 </div>
-
-                {/* Author */}
-                <div
+                <figcaption
                   className="flex flex-col gap-1 pt-5"
                   style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
                 >
-                  <p
-                    className="font-sans text-sm font-semibold text-white"
-                  >
-                    {t.author}
-                  </p>
-                  <p
-                    className="font-sans text-xs"
-                    style={{ color: 'rgba(255,255,255,0.32)' }}
-                  >
+                  <span className="font-sans text-sm font-semibold text-white">{t.author}</span>
+                  <span className="font-sans text-xs" style={{ color: 'rgba(255,255,255,0.32)' }}>
                     {t.role} · {t.company}
-                  </p>
-                </div>
-              </div>
+                  </span>
+                </figcaption>
+              </figure>
             </StaggerItem>
           ))}
         </StaggerChildren>
-
-        {/*
-          ── TO ADD MORE TESTIMONIALS:
-          Open src/data/testimonials.ts and add entries to the array.
-          Each entry needs: id, quote, author, role, company.
-          They will automatically appear here.
-        */}
-
       </Container>
     </section>
   )
 }
 
-// ─── 7. CTA ───────────────────────────────────────────────────────────────────
-
 function CTASection() {
   return (
     <section
+      aria-labelledby="about-cta-heading"
       className="relative section-padding overflow-hidden"
       style={{ backgroundColor: '#0E0E0E' }}
-      aria-labelledby="about-cta-heading"
     >
-      {/* Background accent */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div
           style={{
@@ -872,11 +750,9 @@ function CTASection() {
 
       <Container size="md">
         <div className="flex flex-col items-center text-center gap-9">
-
           <FadeIn>
             <p className="eyebrow">Work With Us</p>
           </FadeIn>
-
           <FadeIn delay={0.1}>
             <h2
               id="about-cta-heading"
@@ -894,7 +770,6 @@ function CTASection() {
               </span>
             </h2>
           </FadeIn>
-
           <FadeIn delay={0.2}>
             <p
               className="font-sans max-w-[32rem] text-balance"
@@ -904,12 +779,11 @@ function CTASection() {
                 color:      'rgba(255,255,255,0.4)',
               }}
             >
-              We take on a focused number of clients each quarter — so each
-              engagement gets the full attention it deserves. If you're
-              building something that matters, let's talk.
+              We take on a focused number of clients each quarter so each
+              engagement gets the full attention it deserves. If you're building
+              something that matters, let's talk.
             </p>
           </FadeIn>
-
           <FadeIn delay={0.3}>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
@@ -929,27 +803,46 @@ function CTASection() {
               </a>
             </div>
           </FadeIn>
-
           <FadeIn delay={0.38}>
-            <p
-              className="font-sans text-xs"
-              style={{ color: 'rgba(255,255,255,0.17)' }}
-            >
+            <p className="font-sans text-xs" style={{ color: 'rgba(255,255,255,0.17)' }}>
               Typically respond within 24 hours · No-obligation discovery call
             </p>
           </FadeIn>
-
         </div>
       </Container>
     </section>
   )
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function AboutPage() {
+  const personSchema = {
+    '@context':  'https://schema.org',
+    '@type':     'Person',
+    name:        'Kwadwo Boateng Opoku-Agyemang',
+    url:         `${SITE_CONFIG.url}/about`,
+    jobTitle:    'Founder',
+    worksFor:    { '@id': `${SITE_CONFIG.url}/#organization` },
+    alumniOf:    { '@type': 'CollegeOrUniversity', name: 'University of the Free State' },
+    sameAs:      ['https://linkedin.com/in/kwadwo-boateng-opoku-agyemang'],
+    email:       'kwadwo.boateng@diastralws.co.za',
+  }
+
+  const aboutPageSchema = {
+    '@context': 'https://schema.org',
+    '@type':    'AboutPage',
+    name:       'About Diastral Web Solutions',
+    url:        `${SITE_CONFIG.url}/about`,
+    description: 'Diastral is a digital systems studio founded by Kwadwo Boateng. We build websites, SEO systems, and automation for ambitious businesses across South Africa.',
+    isPartOf:   { '@id': `${SITE_CONFIG.url}/#website` },
+    about:      { '@id': `${SITE_CONFIG.url}/#organization` },
+  }
+
   return (
     <>
+      <script {...jsonLdScriptProps(personSchema)} />
+      <script {...jsonLdScriptProps(aboutPageSchema)} />
+      <script {...jsonLdScriptProps(faqSchema(GENERAL_FAQS))} />
+
       <HeroSection />
       <StorySection />
       <ApproachSection />

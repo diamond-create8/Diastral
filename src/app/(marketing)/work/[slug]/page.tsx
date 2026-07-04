@@ -1,19 +1,21 @@
 // src/app/(marketing)/work/[slug]/page.tsx
-import type { Metadata } from 'next'
-import { notFound }      from 'next/navigation'
-import Link              from 'next/link'
-import { Container }     from '@/components/layout/Container'
-import { FadeIn }        from '@/components/motion/FadeIn'
+import type { Metadata }  from 'next'
+import { notFound }       from 'next/navigation'
+import Link               from 'next/link'
+import Image              from 'next/image'
+import { Container }      from '@/components/layout/Container'
+import { FadeIn }         from '@/components/motion/FadeIn'
 import { CASE_STUDIES, CASE_STUDY_DETAIL } from '@/data/work'
-import Image  from 'next/image'
+import { buildMetadata }  from '@/lib/seo'
+import { caseStudySchema, breadcrumbSchema, jsonLdScriptProps } from '@/lib/schema'
+import { SITE_CONFIG }    from '@/lib/constants'
+
 type CaseStudy = (typeof CASE_STUDIES)[number]
 
-// ─── Static Params ─────────────────────────────────────────────────────────────
 export function generateStaticParams() {
   return CASE_STUDIES.map((s) => ({ slug: s.slug }))
 }
 
-// ─── Dynamic Metadata ──────────────────────────────────────────────────────────
 export async function generateMetadata({
   params,
 }: {
@@ -22,26 +24,23 @@ export async function generateMetadata({
   const { slug } = await params
   const study = CASE_STUDIES.find((s) => s.slug === slug)
   if (!study) return {}
-  return {
-    title:       study.title,
+
+  return buildMetadata({
+    title:       `${study.title} — ${study.client}`,
     description: study.excerpt,
-  }
+    path:        `/work/${slug}`,
+    ogImage:     `/images/work/${slug}/hero.jpg`,
+    keywords:    [study.client, study.category, ...study.tags],
+  })
 }
 
-// ─── Image Placeholder ────────────────────────────────────────────────────────
-// Replace the `style` background with a real next/image when you have assets.
-// Slot IDs map to specific screenshots you'll drop in later.
-// ─── Image Slot ───────────────────────────────────────────────────────────────
-// Renders a real image from public/images/work/<slug>/<filename>
-
-// ─── Locked Case Study View ────────────────────────────────────────────────────
+// ─── Locked Case Study ─────────────────────────────────────────────────────────
 function LockedCaseStudy({ study }: { study: CaseStudy }) {
   return (
     <div
       className="relative flex flex-col items-center justify-center text-center overflow-hidden"
       style={{ minHeight: '100dvh', backgroundColor: '#0E0E0E' }}
     >
-      {/* Background */}
       <div
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
@@ -60,8 +59,6 @@ function LockedCaseStudy({ study }: { study: CaseStudy }) {
 
       <Container size="sm">
         <div className="relative flex flex-col items-center gap-8 py-20">
-
-          {/* Lock icon */}
           <FadeIn>
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center"
@@ -78,7 +75,6 @@ function LockedCaseStudy({ study }: { study: CaseStudy }) {
             </div>
           </FadeIn>
 
-          {/* Tags */}
           <FadeIn delay={0.08}>
             <div className="flex flex-wrap items-center justify-center gap-2">
               {study.tags.map((tag) => (
@@ -97,7 +93,6 @@ function LockedCaseStudy({ study }: { study: CaseStudy }) {
             </div>
           </FadeIn>
 
-          {/* Heading */}
           <FadeIn delay={0.14}>
             <h1
               className="font-display font-bold text-white"
@@ -111,7 +106,6 @@ function LockedCaseStudy({ study }: { study: CaseStudy }) {
             </h1>
           </FadeIn>
 
-          {/* Body */}
           <FadeIn delay={0.2}>
             <div className="flex flex-col gap-3 max-w-[28rem]">
               <p
@@ -124,14 +118,13 @@ function LockedCaseStudy({ study }: { study: CaseStudy }) {
                 className="font-sans text-sm leading-relaxed"
                 style={{ color: 'rgba(255,255,255,0.35)' }}
               >
-                We're putting together the full write-up for this project,
+                We're putting together the full write-up for this project —
                 including outcomes, process, and screenshots. Check back shortly,
                 or get in touch if you'd like to hear about it directly.
               </p>
             </div>
           </FadeIn>
 
-          {/* CTAs */}
           <FadeIn delay={0.28}>
             <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
               <Link
@@ -154,13 +147,13 @@ function LockedCaseStudy({ study }: { study: CaseStudy }) {
               </Link>
             </div>
           </FadeIn>
-
         </div>
       </Container>
     </div>
   )
 }
 
+// ─── Image Slot ───────────────────────────────────────────────────────────────
 function ImageSlot({
   slug,
   filename,
@@ -204,22 +197,34 @@ export default async function CaseStudyPage({
   const { slug }  = await params
   const study     = CASE_STUDIES.find((s) => s.slug === slug)
   const detail    = CASE_STUDY_DETAIL[slug]
-  const nextStudy = CASE_STUDIES[(CASE_STUDIES.findIndex((s) => s.slug === slug) + 1) % CASE_STUDIES.length]
+  const studyIndex = CASE_STUDIES.findIndex((s) => s.slug === slug)
+  const nextStudy  = CASE_STUDIES[(studyIndex + 1) % CASE_STUDIES.length]
 
   if (!study) notFound()
-    if (!study) notFound()
 
-  // ─── Locked case study — show a "Coming Soon" state instead ─────────────────
   if (study.locked) {
     return <LockedCaseStudy study={study} />
   }
 
-  
-
   return (
     <>
+      {/* Structured data */}
+      <script {...jsonLdScriptProps(breadcrumbSchema([
+        { name: 'Home',          path: '/'                  },
+        { name: 'Work',          path: '/work'              },
+        { name: study.client,    path: `/work/${study.slug}` },
+      ]))} />
+      <script {...jsonLdScriptProps(caseStudySchema({
+        title:   study.title,
+        excerpt: study.excerpt,
+        slug:    study.slug,
+        client:  study.client,
+        year:    study.year,
+        image:   `/images/work/${study.slug}/hero.jpg`,
+      }))} />
+
       {/* ── Hero ── */}
-      <div
+      <header
         className="relative pt-36 pb-20 overflow-hidden"
         style={{ backgroundColor: '#0E0E0E' }}
       >
@@ -253,8 +258,7 @@ export default async function CaseStudyPage({
           </FadeIn>
 
           <div className="max-w-[52rem]">
-            {/* Tags */}
-            <FadeIn>
+            <FadeIn delay={0.06}>
               <div className="flex flex-wrap items-center gap-2 mb-6">
                 {study.tags.map((tag) => (
                   <span
@@ -278,7 +282,6 @@ export default async function CaseStudyPage({
               </div>
             </FadeIn>
 
-            {/* Title */}
             <FadeIn delay={0.1}>
               <h1
                 className="font-display font-bold text-white mb-6"
@@ -292,26 +295,28 @@ export default async function CaseStudyPage({
               </h1>
             </FadeIn>
 
-            {/* Client */}
             <FadeIn delay={0.15}>
               <p
                 className="font-sans text-sm"
                 style={{ color: 'rgba(255,255,255,0.3)' }}
               >
-                Client: <span style={{ color: 'rgba(255,255,255,0.55)' }}>{study.client}</span>
+                Client:{' '}
+                <span style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  {study.client}
+                </span>
               </p>
             </FadeIn>
           </div>
         </Container>
-      </div>
+      </header>
 
       {/* ── Results Strip ── */}
       {study.results && (
         <div
           style={{
             backgroundColor: '#0A0A0A',
-            borderTop:    '1px solid rgba(255,255,255,0.055)',
-            borderBottom: '1px solid rgba(255,255,255,0.055)',
+            borderTop:       '1px solid rgba(255,255,255,0.055)',
+            borderBottom:    '1px solid rgba(255,255,255,0.055)',
           }}
         >
           <Container>
@@ -351,24 +356,27 @@ export default async function CaseStudyPage({
       )}
 
       {/* ── Main Image ── */}
-      {/* ── Main Image (after Results Strip) ── */}
-<div className="py-14" style={{ backgroundColor: '#0E0E0E' }}>
-  <Container>
-    <FadeIn>
-      <ImageSlot
-        slug={slug}
-        filename="Hero.jpg"
-        label={`${study.client} — project overview`}
-        aspectRatio="16/8"
-        priority
-      />
-    </FadeIn>
-  </Container>
-</div>
+      <div className="py-14" style={{ backgroundColor: '#0E0E0E' }}>
+        <Container>
+          <FadeIn>
+            <ImageSlot
+              slug={slug}
+              filename="hero.jpg"
+              label={`${study.client} — project overview`}
+              aspectRatio="16/8"
+              priority
+            />
+          </FadeIn>
+        </Container>
+      </div>
 
       {/* ── Body Content ── */}
       {detail && (
-        <div className="section-padding" style={{ backgroundColor: '#0E0E0E' }}>
+        <article
+          aria-label={`${study.client} case study details`}
+          className="section-padding"
+          style={{ backgroundColor: '#0E0E0E' }}
+        >
           <Container size="md">
             <div className="flex flex-col gap-20">
 
@@ -395,24 +403,23 @@ export default async function CaseStudyPage({
                 </div>
               </FadeIn>
 
-              {/* Secondary image grid */}
-             {/* ── Secondary image grid (inside detail body) ── */}
-<FadeIn>
-  <div className="grid grid-cols-2 gap-4">
-    <ImageSlot
-      slug={slug}
-      filename="Process.jpg"
-      label={`${study.client} — process`}
-      aspectRatio="16/8"
-    />
-    <ImageSlot
-      slug={slug}
-      filename="UI.jpg"
-      label={`${study.client} — design detail`}
-      aspectRatio="16/8"
-    />
-  </div>
-</FadeIn>
+              {/* Secondary images */}
+              <FadeIn>
+                <div className="grid grid-cols-2 gap-4">
+                  <ImageSlot
+                    slug={slug}
+                    filename="process.jpg"
+                    label={`${study.client} — process`}
+                    aspectRatio="4/3"
+                  />
+                  <ImageSlot
+                    slug={slug}
+                    filename="ui.jpg"
+                    label={`${study.client} — design detail`}
+                    aspectRatio="4/3"
+                  />
+                </div>
+              </FadeIn>
 
               {/* Approach */}
               <FadeIn>
@@ -458,14 +465,14 @@ export default async function CaseStudyPage({
                 </div>
               </FadeIn>
 
-              {/* Tools used */}
+              {/* Stack */}
               <FadeIn>
                 <div className="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-8 lg:gap-16">
                   <p
                     className="font-sans text-xs font-semibold uppercase tracking-[0.12em] pt-1"
                     style={{ color: 'rgba(255,255,255,0.22)' }}
                   >
-                    What We Used
+                    The Stack We Used
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {detail.tags.map((tag) => (
@@ -487,30 +494,29 @@ export default async function CaseStudyPage({
 
             </div>
           </Container>
-        </div>
+        </article>
       )}
 
       {/* ── Final screenshot ── */}
-      {/* ── Final screenshot ── */}
-<div className="pb-24" style={{ backgroundColor: '#0E0E0E' }}>
-  <Container>
-    <FadeIn>
-      <ImageSlot
-        slug={slug}
-        filename="Result.jpg"
-        label={`${study.client} — final result`}
-        aspectRatio="16/9"
-      />
-    </FadeIn>
-  </Container>
-</div>
+      <div className="pb-24" style={{ backgroundColor: '#0E0E0E' }}>
+        <Container>
+          <FadeIn>
+            <ImageSlot
+              slug={slug}
+              filename="result.jpg"
+              label={`${study.client} — final result`}
+              aspectRatio="16/9"
+            />
+          </FadeIn>
+        </Container>
+      </div>
 
       {/* ── Next Project ── */}
       {nextStudy && (
         <div
           style={{
             backgroundColor: '#0A0A0A',
-            borderTop: '1px solid rgba(255,255,255,0.055)',
+            borderTop:       '1px solid rgba(255,255,255,0.055)',
           }}
         >
           <Container>
@@ -524,7 +530,10 @@ export default async function CaseStudyPage({
                 </p>
                 <p
                   className="font-display font-bold text-white"
-                  style={{ fontSize: 'clamp(1.125rem, 2vw, 1.5rem)', letterSpacing: '-0.02em' }}
+                  style={{
+                    fontSize:      'clamp(1.125rem, 2vw, 1.5rem)',
+                    letterSpacing: '-0.02em',
+                  }}
                 >
                   {nextStudy.client}
                 </p>
@@ -533,7 +542,7 @@ export default async function CaseStudyPage({
                 href={`/work/${nextStudy.slug}`}
                 className="group inline-flex items-center gap-2 font-sans font-medium text-sm text-white/40 hover:text-white/75 transition-colors duration-200"
               >
-                {nextStudy.title.split(' ').slice(0, 4).join(' ')}…
+                {nextStudy.title.split(' ').slice(0, 5).join(' ')}…
                 <svg
                   width="16" height="16" viewBox="0 0 16 16" fill="none"
                   className="transition-transform duration-200 group-hover:translate-x-1"

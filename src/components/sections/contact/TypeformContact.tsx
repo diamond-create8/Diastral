@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -50,7 +51,7 @@ const TOTAL_STEPS = 6
 const SERVICES: { id: string; label: string; icon: React.ReactNode }[] = [
   {
     id:    'development-and-design',
-    label: 'Attract My Ideal Clients',
+    label: 'Attract Ideal Clients',
     icon: (
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
         <path d="M8 8.5L4.5 11l3.5 3M14 8.5l3.5 2.5-3.5 3M12.5 5.5l-3 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -371,24 +372,175 @@ function InlineLogo() {
       aria-label="Diastral — Home"
     >
       <div
-        className="w-7 h-7 rounded-[7px] flex items-center justify-center shrink-0"
-        style={{ backgroundColor: '#FFD700' }}
+        
       >
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M8 1L14.5 4.5V11.5L8 15L1.5 11.5V4.5L8 1Z" stroke="#0E0E0E" strokeWidth="1.5" strokeLinejoin="round"/>
-          <path d="M8 5L11 6.75V10.25L8 12L5 10.25V6.75L8 5Z" fill="#0E0E0E"/>
-        </svg>
+        <Image
+                      src="/images/logo.png"        
+                      alt="Diastral Web Solutions"
+                      width={90}
+                      height={90}
+                    />  
       </div>
-      <span
-        className="font-display font-semibold text-white text-sm tracking-wide"
-      >
-        Diastral
-      </span>
+      
     </Link>
   )
 }
 
 // ─── Main Component ────────────────────────────────────────────────────────────
+
+// Add inside TypeformContact.tsx
+
+const COUNTRY_CODES = [
+  { code: '(+27)',  flag: 'South Africa', country: 'ZA' }, // default
+  { code: '(+1)',   flag: 'United States of America', country: 'US' },
+  { code: '(+44)',  flag: 'United Kingdom', country: 'GB' },
+  { code: '(+61)',  flag: 'Austrailia', country: 'AU' },
+  { code: '(+234)', flag: 'Nigeria', country: 'NG' },
+  { code: '(+254)', flag: 'Kenya', country: 'KE' },
+  { code: '(+263)', flag: 'Zimbabwe', country: 'ZW' },
+  { code: '(+267)', flag: 'Botswana', country: 'BW' },
+  { code: '(+264)', flag: 'Namibia', country: 'NA' },
+  { code: '(+255)', flag: 'Tanzania', country: 'TZ' },
+  { code: '(+256)', flag: 'Uganda', country: 'UG' },
+  { code: '(+233)', flag: 'Ghana', country: 'GH' },
+  { code: '(+260)', flag: 'Zambia', country: 'ZM' },
+  { code: '(+49)',  flag: 'Germany', country: 'DE' },
+  { code: '(+33)',  flag: 'France', country: 'FR' },
+  { code: '(+971)', flag: 'United Arab Emirates', country: 'AE' },
+  { code: '(+91)',  flag: 'India', country: 'IN' },
+  { code: '(+86)',  flag: 'China', country: 'CN' },
+]
+
+function PhoneField({
+  label,
+  value,
+  error,
+  autoFocus = false,
+  onChange,
+}: {
+  label:      string
+  value:      string
+  error?:     string
+  autoFocus?: boolean
+  onChange:   (v: string) => void
+}) {
+  const [countryCode, setCountryCode] = useState('+27')
+  const [number,      setNumber]      = useState('')
+  const [focused,     setFocused]     = useState<'select' | 'input' | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (autoFocus) setTimeout(() => inputRef.current?.focus(), 120)
+  }, [autoFocus])
+
+  // Sync combined value up to parent
+  useEffect(() => {
+    onChange(`${countryCode} ${number}`.trim())
+  }, [countryCode, number]) // eslint-disable-line
+
+  const borderColor = error
+    ? 'rgba(239,68,68,0.5)'
+    : (focused === 'select' || focused === 'input')
+    ? 'rgba(255,215,0,0.45)'
+    : 'rgba(255,255,255,0.09)'
+
+  return (
+    <div className="flex flex-col gap-2">
+      <label
+        className="font-sans text-sm font-medium"
+        style={{ color: 'rgba(255,255,255,0.5)' }}
+      >
+        {label}
+        <span style={{ color: 'rgba(255,215,0,0.6)', marginLeft: '3px' }}>*</span>
+      </label>
+
+      <div
+        className="flex overflow-hidden"
+        style={{
+          backgroundColor: (focused === 'select' || focused === 'input')
+            ? 'rgba(255,255,255,0.05)'
+            : 'rgba(255,255,255,0.03)',
+          border:          `1px solid ${borderColor}`,
+          borderRadius:    '10px',
+          transition:      'border-color 0.2s ease, background-color 0.2s ease',
+          height:          '54px',
+        }}
+      >
+        {/* Country code selector */}
+        <div className="relative shrink-0" style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+          <select
+            value={countryCode}
+            onChange={(e) => setCountryCode(e.target.value)}
+            onFocus={() => setFocused('select')}
+            onBlur={() => setFocused(null)}
+            aria-label="Country code"
+            className="h-full font-sans text-sm appearance-none cursor-pointer"
+            style={{
+              padding:         '0 2.5rem 0 0.875rem',
+              backgroundColor: 'transparent',
+              color:           'rgba(255,255,255,0.7)',
+              border:          'none',
+              outline:         'none',
+              minWidth:        '80px',
+            }}
+          >
+            {COUNTRY_CODES.map((c) => (
+              <option
+                key={c.country}
+                value={c.code}
+                style={{ backgroundColor: '#1A1A1A', color: '#FAFAFA' }}
+              >
+                {c.flag} {c.code}
+              </option>
+            ))}
+          </select>
+          {/* Chevron */}
+          <svg
+            className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
+            width="12" height="12" viewBox="0 0 12 12" fill="none"
+            aria-hidden="true"
+          >
+            <path d="M3 4.5L6 7.5L9 4.5" stroke="rgba(255,255,255,0.3)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+
+        {/* Number input */}
+        <input
+          ref={inputRef}
+          type="tel"
+          placeholder="82 000 0000"
+          value={number}
+          onFocus={() => setFocused('input')}
+          onBlur={() => setFocused(null)}
+          onChange={(e) => setNumber(e.target.value)}
+          className="flex-1 font-sans"
+          style={{
+            padding:         '0 1rem',
+            backgroundColor: 'transparent',
+            color:           '#FAFAFA',
+            fontSize:        '1rem',
+            border:          'none',
+            outline:         'none',
+          }}
+        />
+      </div>
+
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="font-sans text-xs"
+            style={{ color: 'rgba(239,68,68,0.8)' }}
+          >
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 export function TypeformContact() {
   const [step,      setStep]      = useState(0)
@@ -626,7 +778,7 @@ if (!response.ok) {
                   Let's figure out
                   <br />
                   <span style={{ color: 'rgba(250,250,250,0.35)' }}>
-                    the right solution.
+                    the right solution for you.
                   </span>
                 </motion.h1>
 
@@ -730,14 +882,11 @@ if (!response.ok) {
                   error={errors.email}
                   onChange={(v) => set('email', v)}
                 />
-                <Field
-                  id="phone"
-                  label="Phone Number"
-                  type="tel"
-                  placeholder="+27 123 456 7890"
-                  value={data.phone}
-                  error={errors.phone}
-                  onChange={(v) => set('phone', v)}
+                <PhoneField
+                label="Phone Number"
+                value={data.phone}
+                error={errors.phone}
+                onChange={(v) => set('phone', v)}
                 />
               </div>
             </motion.div>

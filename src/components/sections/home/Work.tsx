@@ -185,8 +185,8 @@ export function Work() {
                   lineHeight:    1.08,
                 }}
               >
-                Results that speak
-                <br />for themselves.
+                Our Latest Work
+                <br />
               </h2>
             </FadeIn>
           </div>

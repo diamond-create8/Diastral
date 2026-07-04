@@ -7,7 +7,7 @@ import { SITE_CONFIG } from '@/lib/constants'
 import Image from 'next/image'
 
 const SERVICE_LINKS = [
-  { label: 'Attract Your Ideal Customer', href: '/services#development-and-design' },
+  { label: 'Attract Ideal Customer', href: '/services#development-and-design' },
   { label: 'Get Found Online', href: '/services#growth-and-acquisition' },
   { label: 'Nurture Your Customers',   href: '/services#automation-and-integration ' },
 
@@ -18,16 +18,13 @@ function FooterLogo()
   return (
     <div className="flex items-center gap-3">
     <Image
-        src="images/diastral-logo.svg"
-        alt="Diastral Web Solutions"
-        width={40}
-        height={40}
-        
-    />
+              src="/images/logo.png"        // ← change from /logo.jpg
+              alt="Diastral Web Solutions"
+              width={90}
+              height={90}
+            />  
 
-      <span className="font-display font-semibold tracking-wide text-[15px] text-white">
-        Diastral Web Solutions
-      </span>
+      
     </div>
   )
 }
@@ -56,15 +53,10 @@ export function Footer() {
 
       <Container>
         {/* ── Top grid ── */}
-        <div
-          className="grid gap-10 lg:gap-8 py-16 lg:py-20"
-          style={{
-            gridTemplateColumns: 'repeat(12, 1fr)',
-          }}
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-8 lg:gap-6 py-14 lg:py-20">
           {/* Brand */}
           <div
-            className="col-span-12 lg:col-span-4 flex flex-col gap-5"
+            className="col-span-2 md:col-span-4 lg:col-span-4 flex flex-col gap-5"
           >
             <FooterLogo />
             <p
@@ -190,7 +182,7 @@ export function Footer() {
           <div className="hidden lg:block lg:col-span-2" />
 
           {/* Company */}
-<div className="col-span-6 lg:col-span-2 flex flex-col gap-4">
+<div className="col-span-1 md:col-span-1 lg:col-span-2 flex flex-col gap-4">
   <h3
     className="font-sans font-semibold uppercase tracking-[0.12em]"
     style={{ fontSize: '10px', color: 'rgba(255,255,255,0.22)' }}
@@ -213,7 +205,7 @@ export function Footer() {
 </div>
 
           {/* Services */}
-          <div className="col-span-6 lg:col-span-2 flex flex-col gap-4">
+          <div className="col-span-1 md:col-span-1 lg:col-span-2 flex flex-col gap-4">
             <h3
               className="font-sans font-semibold uppercase tracking-[0.12em]"
               style={{ fontSize: '10px', color: 'rgba(255,255,255,0.22)' }}
@@ -242,7 +234,7 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="col-span-12 lg:col-span-2 flex flex-col gap-4">
+          <div className="col-span-2 md:col-span-2 lg:col-span-2 flex flex-col gap-4">
             <h3
               className="font-sans font-semibold uppercase tracking-[0.12em]"
               style={{ fontSize: '10px', color: 'rgba(255,255,255,0.22)' }}
@@ -288,16 +280,16 @@ export function Footer() {
 
         {/* ── Bottom bar ── */}
         <div
-          className="py-6 flex flex-col sm:flex-row items-center justify-between gap-3"
+          className="py-5 flex flex-col sm:flex-row items-center justify-between gap-3"
           style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
         >
           <p
-            className="font-sans text-xs"
+            className="font-sans text-xs text-center sm:text-left"
             style={{ color: 'rgba(255,255,255,0.18)' }}
           >
             © {year} Diastral Web Solutions. All rights reserved.
           </p>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5 flex-wrap justify-center">
             {[
               { label: 'Privacy Policy', href: '/privacy' },
               { label: 'Terms of Service', href: '/terms' },
