@@ -503,7 +503,7 @@ export default async function CaseStudyPage({
           <FadeIn>
             <ImageSlot
               slug={slug}
-              filename="result.jpg"
+              filename="result.png"
               label={`${study.client} — final result`}
               aspectRatio="16/9"
             />
