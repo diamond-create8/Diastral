@@ -13,7 +13,9 @@ import Image from 'next/image'
 // ─── Project Thumbnail (CSS-only abstract visual) ─────────────────────────────
 // These serve as premium visual stand-ins until real project imagery exists.
 // ─── Project Thumbnail ─────────────────────────────────────────────────────────
+
 function Thumbnail({ slug, client }: { slug: string; client: string }) {
+  console.log(slug) //added now
   return (
     <div className="absolute inset-0 overflow-hidden">
       <Image
