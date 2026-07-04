@@ -17,7 +17,7 @@ function Thumbnail({ slug, client }: { slug: string; client: string }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <Image
-        src={`/images/work/${slug}/fontleroy-fashion-store/UI.png`}
+        src={`/images/work/${slug}/UI.png`}
         //public/images/work/fontleroy-fashion-store/UI.png
         alt={`${client} — project preview`}
         fill
