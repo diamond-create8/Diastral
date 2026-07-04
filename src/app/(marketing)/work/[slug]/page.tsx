@@ -361,7 +361,7 @@ export default async function CaseStudyPage({
           <FadeIn>
             <ImageSlot
               slug={slug}
-              filename="hero.jpg"
+              filename="/images/Hero.png"
               label={`${study.client} — project overview`}
               aspectRatio="16/8"
               priority
@@ -408,13 +408,13 @@ export default async function CaseStudyPage({
                 <div className="grid grid-cols-2 gap-4">
                   <ImageSlot
                     slug={slug}
-                    filename="process.jpg"
+                    filename="/images/Process.png"
                     label={`${study.client} — process`}
                     aspectRatio="4/3"
                   />
                   <ImageSlot
                     slug={slug}
-                    filename="ui.jpg"
+                    filename="/images/UI.png"
                     label={`${study.client} — design detail`}
                     aspectRatio="4/3"
                   />
@@ -503,7 +503,7 @@ export default async function CaseStudyPage({
           <FadeIn>
             <ImageSlot
               slug={slug}
-              filename="result.png"
+              filename="/images/Result.png"
               label={`${study.client} — final result`}
               aspectRatio="16/9"
             />
