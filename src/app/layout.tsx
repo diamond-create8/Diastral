@@ -4,7 +4,7 @@ import { Manrope, Inter, JetBrains_Mono } from 'next/font/google'
 import { Navbar }      from '@/components/layout/Navbar'
 import { SITE_CONFIG } from '@/lib/constants'
 import { organizationSchema, websiteSchema, jsonLdScriptProps } from '@/lib/schema'
-
+import { GoogleAnalytics } from "@next/third-parties/google";
 import './globals.css'
 
 const manrope = Manrope({
@@ -118,7 +118,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main-content" tabIndex={-1}>
           {children}
         </main>
-        
+        <GoogleAnalytics gaId="G-JBHMSXBC4L" />
       </body>
     </html>
   )
