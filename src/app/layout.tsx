@@ -29,6 +29,10 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
+
+  verification: {
+  google: "EBtJsqI13A8S3gBXnRezA5gCE-Hrqmkr2EBeKdXyeHc",
+},
   title: {
     default:  `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`,
     template: `%s | ${SITE_CONFIG.name}`,
