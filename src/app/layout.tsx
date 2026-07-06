@@ -6,6 +6,7 @@ import { SITE_CONFIG } from '@/lib/constants'
 import { organizationSchema, websiteSchema, jsonLdScriptProps } from '@/lib/schema'
 import { GoogleAnalytics } from "@next/third-parties/google";
 import './globals.css'
+import { CookieConsent } from '@/components/layout/CookieConsent'
 
 const manrope = Manrope({
   subsets:  ['latin'],
@@ -122,7 +123,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main-content" tabIndex={-1}>
           {children}
         </main>
-        <GoogleAnalytics gaId="G-JBHMSXBC4L" />
+
+        <CookieConsent />
       </body>
     </html>
   )
