@@ -126,6 +126,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
 
         <CookieConsent />
+        
+  <script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/147708883.js"></script>
+
       </body>
     </html>
   )
