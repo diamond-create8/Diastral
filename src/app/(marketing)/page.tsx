@@ -13,6 +13,7 @@ import { faqSchema, reviewSchema, jsonLdScriptProps } from '@/lib/schema'
 import { GENERAL_FAQS }   from '@/data/faqs'
 import { TESTIMONIALS }    from '@/data/testimonials'
 import { buildMetadata }   from '@/lib/seo'
+import { CaseStudySlider } from '@/components/sections/home/CaseStudySlider'
 
 export const metadata: Metadata = {
   ...buildMetadata({
@@ -56,8 +57,9 @@ export default function HomePage() {
       <Hero />
       <LogoStrip />
       <Services />
+      <CaseStudySlider />
       <Process />
-      <Work />
+      {/*<Work />*/}
       {/*<ClientLogos />*/}
       <Testimonials />
       <CTA />

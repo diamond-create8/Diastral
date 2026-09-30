@@ -28,6 +28,8 @@ export interface CaseStudy {
   featured:    boolean
   locked?:     boolean        
   results?:    Metric[]
+  sliderImage?: string
+  hideMedia?: boolean
 }
 
 export interface Metric {

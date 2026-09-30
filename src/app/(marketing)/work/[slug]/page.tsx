@@ -9,6 +9,7 @@ import { CASE_STUDIES, CASE_STUDY_DETAIL } from '@/data/work'
 import { buildMetadata }  from '@/lib/seo'
 import { caseStudySchema, breadcrumbSchema, jsonLdScriptProps } from '@/lib/schema'
 import { SITE_CONFIG }    from '@/lib/constants'
+import { SponsorshipSystemDiagram } from '@/components/work/SponsorshipSystemDiagram'
 
 type CaseStudy = (typeof CASE_STUDIES)[number]
 
@@ -260,15 +261,23 @@ export default async function CaseStudyPage({
           </Container>
         </div>
       )}
-
+      
       {/* ── Main Image ── */}
-      <div className="py-10 md:py-14" style={{ backgroundColor: '#0E0E0E' }}>
-        <Container>
-          <FadeIn>
-            <ImageSlot slug={slug} filename="Hero.png" label={`${study.client} — project overview`} aspectRatio="16/8" priority />
-          </FadeIn>
-        </Container>
+      {/* ── Main Image ── */}
+<div className="py-10 md:py-14" style={{ backgroundColor: '#0E0E0E' }}>
+  <Container>
+    <FadeIn>
+      {!study.hideMedia && (
+        <ImageSlot slug={slug} filename="Hero.png" label={`${study.client} — project overview`} aspectRatio="16/8" priority />
+      )}
+    </FadeIn>
+    {slug === 'ghanafest-south-africa' && (
+      <div className="mt-4">
+        <SponsorshipSystemDiagram />
       </div>
+    )}
+  </Container>
+</div>
 
       {/* ── Body Content ── */}
       {detail && (
@@ -293,32 +302,35 @@ export default async function CaseStudyPage({
               </FadeIn>
 
               {/* Secondary images — larger on mobile */}
-              <FadeIn>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="relative w-full overflow-hidden rounded-xl"
-                    style={{ aspectRatio: '4/3', backgroundColor: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}
-                  >
-                    <Image
-                      src={`/images/work/${slug}/Process.png`}
-                      alt={`${study.client} — process`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 600px"
-                    />
-                  </div>
-                  <div className="relative w-full overflow-hidden rounded-xl"
-                    style={{ aspectRatio: '4/3', backgroundColor: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}
-                  >
-                    <Image
-                      src={`/images/work/${slug}/UI.png`}
-                      alt={`${study.client} — design detail`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 600px"
-                    />
-                  </div>
-                </div>
-              </FadeIn>
+              {/* Secondary images — larger on mobile */}
+{!study.hideMedia && (
+  <FadeIn>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="relative w-full overflow-hidden rounded-xl"
+        style={{ aspectRatio: '4/3', backgroundColor: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}
+      >
+        <Image
+          src={`/images/work/${slug}/Process.png`}
+          alt={`${study.client} — process`}
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 600px"
+        />
+      </div>
+      <div className="relative w-full overflow-hidden rounded-xl"
+        style={{ aspectRatio: '4/3', backgroundColor: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}
+      >
+        <Image
+          src={`/images/work/${slug}/UI.png`}
+          alt={`${study.client} — design detail`}
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 600px"
+        />
+      </div>
+    </div>
+  </FadeIn>
+)}
 
               {/* Approach */}
               <FadeIn>
@@ -366,13 +378,16 @@ export default async function CaseStudyPage({
       )}
 
       {/* ── Final screenshot ── */}
-      <div className="pb-16 md:pb-24" style={{ backgroundColor: '#0E0E0E' }}>
-        <Container>
-          <FadeIn>
-            <ImageSlot slug={slug} filename="Result.png" label={`${study.client} — final result`} aspectRatio="16/9" />
-          </FadeIn>
-        </Container>
-      </div>
+     {/* ── Final screenshot ── */}
+{!study.hideMedia && (
+  <div className="pb-16 md:pb-24" style={{ backgroundColor: '#0E0E0E' }}>
+    <Container>
+      <FadeIn>
+        <ImageSlot slug={slug} filename="Result.png" label={`${study.client} — final result`} aspectRatio="16/9" />
+      </FadeIn>
+    </Container>
+  </div>
+)}
 
       {/* ── Next Project — FIXED ── */}
       {nextStudy && (
