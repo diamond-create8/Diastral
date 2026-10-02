@@ -51,7 +51,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     tags: ['Web Development', 'E-Commerce', 'Brand Strategy'],
     coverImage: '',
     featured: true,
-    sliderImage: 'slider.png',
+    sliderImage: 'slider.jpg',
     results: [
       { value: 'Premium', label: 'Retail-grade storefront for startup' },
       { value: 'Full-Funnel', label: 'Brand strategy & content system' },

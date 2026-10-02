@@ -268,7 +268,7 @@ export default async function CaseStudyPage({
   <Container>
     <FadeIn>
       {!study.hideMedia && (
-        <ImageSlot slug={slug} filename="Hero.png" label={`${study.client} — project overview`} aspectRatio="16/8" priority />
+        <ImageSlot slug={slug} filename="hero.jpg" label={`${study.client} — project overview`} aspectRatio="16/8" priority />
       )}
     </FadeIn>
     {slug === 'ghanafest-south-africa' && (
@@ -383,7 +383,7 @@ export default async function CaseStudyPage({
   <div className="pb-16 md:pb-24" style={{ backgroundColor: '#0E0E0E' }}>
     <Container>
       <FadeIn>
-        <ImageSlot slug={slug} filename="Result.png" label={`${study.client} — final result`} aspectRatio="16/9" />
+        <ImageSlot slug={slug} filename="result.jpg" label={`${study.client} — final result`} aspectRatio="16/9" />
       </FadeIn>
     </Container>
   </div>
