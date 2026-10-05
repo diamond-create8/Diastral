@@ -242,14 +242,16 @@ export default async function CaseStudyPage({
       {study.results && (
         <div style={{ backgroundColor: '#0A0A0A', borderTop: '1px solid rgba(255,255,255,0.055)', borderBottom: '1px solid rgba(255,255,255,0.055)' }}>
           <Container>
-            <div className="grid grid-cols-3 py-10 gap-4">
-              {study.results.map((r, i) => (
-                <FadeIn key={r.label} delay={i * 0.08}>
-                  <div className="flex flex-col gap-1.5"
-                    style={i < study.results!.length - 1
-                      ? { borderRight: '1px solid rgba(255,255,255,0.055)', paddingRight: '2rem' }
-                      : {}}
-                  >
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 py-10">
+  {study.results.map((r, i) => (
+    <FadeIn key={r.label} delay={i * 0.08}>
+      <div
+        className={`flex flex-col gap-1.5 pb-6 sm:pb-0 ${
+          i < study.results!.length - 1
+            ? 'border-b sm:border-b-0 sm:border-r border-white/[0.055] sm:pr-8'
+            : ''
+        }`}
+      >
                     <span className="font-display font-bold text-white"
                       style={{ fontSize: 'clamp(1.75rem, 4vw, 3.25rem)', letterSpacing: '-0.04em', lineHeight: 1 }}
                     >{r.value}</span>
