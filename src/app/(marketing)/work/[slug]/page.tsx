@@ -312,7 +312,7 @@ export default async function CaseStudyPage({
         style={{ aspectRatio: '4/3', backgroundColor: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}
       >
         <Image
-          src={`/images/work/${slug}/Process.png`}
+          src={`/images/work/${slug}/process-1.jpg`}
           alt={`${study.client} — process`}
           fill
           className="object-cover"
@@ -323,7 +323,7 @@ export default async function CaseStudyPage({
         style={{ aspectRatio: '4/3', backgroundColor: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}
       >
         <Image
-          src={`/images/work/${slug}/UI.png`}
+          src={`/images/work/${slug}/process-2.jpg`}
           alt={`${study.client} — design detail`}
           fill
           className="object-cover"
